@@ -1,11 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/contexts/ToastContext";
 
 export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="py-16 text-center text-neutral-400">Loading…</div>}>
+      <LoginContent />
+    </Suspense>
+  );
+}
+
+function LoginContent() {
   const { login, loading } = useAuth();
   const { show } = useToast();
   const router = useRouter();
