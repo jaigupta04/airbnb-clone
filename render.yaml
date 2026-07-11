@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: airbnb-clone-api
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: python run.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.0
+      - key: SECRET_KEY
+        generateValue: true
+    healthCheckPath: /
+
+  - type: web
+    name: airbnb-clone-web
+    runtime: node
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_VERSION
+        value: 20.17.0
+      - key: NEXT_PUBLIC_API_BASE
+        fromService:
+          type: web
+          name: airbnb-clone-api
+          envVarKey: RENDER_EXTERNAL_URL
